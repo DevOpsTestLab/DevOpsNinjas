@@ -47,6 +47,9 @@ This Jenkins repo will have all the required Terraform files needed to deploy a 
 5. The Jenkins initial admin password should be available on your terraform output prompt, refer, https://github.com/DevOpsTestLab/jenkins/blob/main/ec2.tf#L21
 6. Once the Terraform provisioning completes, open the public IP with the right port number
 7. Install suggested plugins and create a initial user to get started with the next task
+8. Install the following plugins as they are bare minimum to get you started,
+    - https://plugins.jenkins.io/docker-plugin/
+    - https://plugins.jenkins.io/docker-workflow/
 
 > **Note**: Based on the latest update we have from our DevOps team(Before they vanished), this instance may not be fully ready, we know it spins up successfully.However, you may still have to modify any configuration, install plugins, create new configurations, add credentials to support our new onboarding initiative.
 
