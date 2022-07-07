@@ -42,9 +42,11 @@ Below is the block diagram of how the pipeline should look like. _The blocks in 
 This Jenkins repo will have all the required Terraform files needed to deploy a Jenkins server on an EC2 instance. Here are the things for you to consider,
 1. Setup your bucket, statefiles and required IAM roles and policies on AWS
 2. Update your bucket and statefile names in the TF files - https://github.com/DevOpsTestLab/jenkins/blob/main/main.tf#L7-L8
-3. Setup your key pair - https://github.com/DevOpsTestLab/jenkins/blob/main/ec2.tf
+3. Setup your private key pair - https://github.com/DevOpsTestLab/jenkins/blob/main/ec2.tf
 4. Run the terraform plan and apply from your local or any other instance where you are running terraform from
 5. The Jenkins initial admin password should be available on your terraform output prompt, refer, https://github.com/DevOpsTestLab/jenkins/blob/main/ec2.tf#L21
+6. Once the Terraform provisioning completes, open the public IP with the right port number
+7. Install suggested plugins and create a initial user to get started with the next task
 
 > **Note**: Based on the latest update we have from our DevOps team(Before they vanished), this instance may not be fully ready, we know it spins up successfully.However, you may still have to modify any configuration, install plugins, create new configurations, add credentials to support our new onboarding initiative.
 
