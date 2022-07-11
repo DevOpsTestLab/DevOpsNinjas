@@ -44,7 +44,7 @@ This Jenkins repo will have all the required Terraform files needed to deploy a 
 2. Update your bucket and statefile names in the TF files - https://github.com/DevOpsTestLab/jenkins/blob/main/main.tf#L7-L8
 3. Setup your private key pair - https://github.com/DevOpsTestLab/jenkins/blob/main/ec2.tf
 4. Run the terraform plan and apply from your local or any other instance where you are running terraform from
-5. The Jenkins initial admin password should be available on your terraform output prompt, refer, https://github.com/DevOpsTestLab/jenkins/blob/main/ec2.tf#L21
+5. The Jenkins [initial admin password](https://www.jenkins.io/doc/book/installing/linux/#unlocking-jenkins) should be available on your terraform output prompt, refer, https://github.com/DevOpsTestLab/jenkins/blob/main/ec2.tf#L21
 6. Once the Terraform provisioning completes, open the public IP with the right port number
 7. Install suggested plugins and create a initial user to get started with the next task
 8. Install the following plugins as they are bare minimum to get you started,
@@ -57,7 +57,7 @@ This Jenkins repo will have all the required Terraform files needed to deploy a 
 
 ### Task 2: Setup a new multi-branch pipeline job for our hello world app
 
-> Description: Here is our flagship application which needs to be onboarded, https://github.com/DevOpsTestLab/sample-spring-boot. Fork this repository under your own github account so that you can work on it independently. You should see the `Jenkinfile` as part of the repository which our DevOps team created. Its developed in springboot and gradle is used as the build automation tool. Create a multi-branch pipeline project in our Jenkins instance and confirm that the build is successful.
+> Description: Here is our flagship application which needs to be onboarded, https://github.com/DevOpsTestLab/sample-spring-boot. Fork this repository under your own github account so that you can work on it independently. You should see the `Jenkinfile` as part of the repository which our DevOps team created. Its developed in springboot and gradle is used as the build automation tool. Create a multi-branch pipeline project in our Jenkins instance and confirm that the build is successful. Although not a top priority, you can ensure that each build is also running Unit tests and creating coverage report to use in sonarqube.
 
 > **Note**: Feel free to install any plugin in Jenkins to make this work. Set-up GITHUB credentials in Jenkins so that it can checkout and perform the build.
 
