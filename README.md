@@ -1,90 +1,76 @@
-# DevOpsNinjas
-# Welcome to the DevOps Ninjas team!
+# AWS DevOps Lab
+
+## Please find the list of steps that are required to complete the Lab
+
+## Tasks
+
+### Task 1: Create the CI/CD pipeline on using AWS Codepipeline/Codebuild and CodeCommit
+
+Use the following repo to deploy your infrastructure on AWS.
+
+Repo: https://github.com/DevOpsTestLab/infra
+
+This repo has the terraform templates required to deploy the following resources:
+
+1. [AWS Codepipeline](https://github.com/DevOpsTestLab/infra/blob/main/main.tf#L7) - your CICD orchestrator
+2. [AWS CodeCommit](https://github.com/DevOpsTestLab/infra/blob/main/main.tf#L42) - Your source code repo
+3. [AWS ECR](https://github.com/DevOpsTestLab/infra/blob/main/main.tf#L49) - Your container registry
+
+#### Instructions:
+- Use terraform from your local to deploy these resources on AWS
+- Use the AWS CLI to configure your user/roles/policy needed to deploy these resources
+- Store the statefile for this on a S3 bucket if possible. However its fine if you store it locally
+- Review the [var files](https://github.com/DevOpsTestLab/infra/blob/main/terraform.tfvars) to ensure that all the right variables are available for the templates to execute successfully
+- Review the modules for each of the resources under the mdoules folder - https://github.com/DevOpsTestLab/infra/tree/main/modules
+
+### Task 2: Setup your repository on CodeCommit
+
+Once you successfully complete the above step, you will have a codecommit repository created. Go ahead and download and upload the following application codebase into your new CodeCommit Repo
+
+Application Codebase - https://github.com/DevOpsTestLab/sample-aws-lambda
+
+This is a simple hello-world application built on python. Which gets packaged as a Docker Container and Deploy to AWS Lambda.
+
+#### Instructions:
+- Review the application code here - https://github.com/DevOpsTestLab/sample-aws-lambda/blob/main/lambda/aws-lambda-url.py (This just prints hello)
+- Review the dockerfile here - https://github.com/DevOpsTestLab/sample-aws-lambda/blob/main/lambda/Dockerfile
+- This application is also deployed to AWS using Terraform. Here is the terraform template, https://github.com/DevOpsTestLab/sample-aws-lambda/blob/main/main.tf
+
+### Task 3: Setup your CI/CD pipeline - Build
+
+Once you commit your code into AWS CodeCommit. The pipeline created from Task 1 will be kicked off automatically. Make sure the build stage is successfully.
+
+The build stage is driven by this [codebuild step](https://github.com/DevOpsTestLab/infra/blob/main/modules/codepipeline/main.tf#L13) and this [buildspec file](https://github.com/DevOpsTestLab/infra/blob/main/modules/codepipeline/templates/buildspec_build.yml)
+
+*Update the buildspec file if you need to and re-apply the terraform templates to update your infrastructure*
 
 
-<p align="center">
-<img src="images/Logo.png">
-</p>
+### Task 4: Setup your CI/CD pipeline - Sonarqube
 
-You have been brought into a scenario where our entire DevOps team just vanished over night. ~~We suspect it could be an alien abduction, since some of our engineers brought up UFO sightings in the stand-ups last week~~ (_Needs peer review_).
+The next step is the sonarqube quality scan step. Its driven by the following [buildspec file](https://github.com/DevOpsTestLab/infra/blob/main/modules/codepipeline/templates/buildspec_scan.yml)
 
-### Our Goal
+We will be using sonarcloud which is the SaaS offering for Sonarqube analysis - https://sonarcloud.io/
 
-We are planning for the big release of our **Hello World Application** by end of the day
+Have the following SSM Parameters created manually or though terraform from step 1 that is needed by your sonarqube analysis step. 
 
-Our DevOps team was working day and night to get this application onto the CICD pipeline but, unfortunately they couldnt complete it, which is where you come in!
+https://github.com/DevOpsTestLab/infra/blob/main/modules/codepipeline/templates/buildspec_scan.yml#L4
 
-# Listed below are our next steps!
+Use the corresponding values for your 
+ - token - https://sonarcloud.io/account/security
+ - organization - https://sonarcloud.io/account/organizations
+ - sonarendpoint will be - https://sonarcloud.io/
 
-### Onboard our flagship application onto the CICD pipeline
+Some documentation for your reference - https://docs.sonarcloud.io/advanced-setup/analysis-parameters/
 
-**Status:** In-progress
+*Update the buildspec file if you need to and re-apply the terraform templates to update your infrastructure*
 
-**Application Code:** https://github.com/DevOpsTestLab/sample-spring-boot
+Task 5: Setup your CI/CD pipeline - Deploy
 
-**Description:** 
+The next step is the sonarqube quality scan step. Its driven by the following [buildspec file](https://github.com/DevOpsTestLab/infra/blob/main/modules/codepipeline/templates/buildspec_deploy.yml)
 
-The DevOps team picked up this work as part of the CICD onboarding but, unfortunately they couldn't complete it.
+*Update the buildspec file if you need to and re-apply the terraform templates to update your infrastructure*
 
-Below is the block diagram of how the pipeline should look like. _The blocks in RED needs your attention._
-
-
-<p align="center">
-<img src="images/Flow.jpeg">
-</p>
+Once the Lambda fuction is deploy. Run a test with some test event. The results should just print "hello world"
 
 
-## Below is the list of tasks where your help is required:
-
-### Task 1: Spin-up our CICD infrastructure
-
-> Description: We will be using Jenkins as our CICD tool. Here is the link to our Jenkins repo, https://github.com/DevOpsTestLab/jenkins. 
-This Jenkins repo will have all the required Terraform files needed to deploy a Jenkins server on an EC2 instance. Here are the things for you to consider,
-1. Setup your bucket, statefiles and required IAM roles and policies on AWS
-2. Update your bucket and statefile names in the TF files - https://github.com/DevOpsTestLab/jenkins/blob/main/main.tf#L7-L8
-3. Setup your private key pair - https://github.com/DevOpsTestLab/jenkins/blob/main/ec2.tf
-4. Run the terraform plan and apply from your local or any other instance where you are running terraform from
-5. The Jenkins [initial admin password](https://www.jenkins.io/doc/book/installing/linux/#unlocking-jenkins) should be available on your terraform output prompt, refer, https://github.com/DevOpsTestLab/jenkins/blob/main/ec2.tf#L21
-6. Once the Terraform provisioning completes, open the public IP with the right port number
-7. Install suggested plugins and create a initial user to get started with the next task
-8. Install the following plugins as they are bare minimum to get you started,
-    - https://plugins.jenkins.io/docker-plugin/
-    - https://plugins.jenkins.io/docker-workflow/
-
-> **Note**: Based on the latest update we have from our DevOps team(Before they vanished), this instance may not be fully ready, we know it spins up successfully.However, you may still have to modify any configuration, install plugins, create new configurations, add credentials to support our new onboarding initiative.
-
-***
-
-### Task 2: Setup a new multi-branch pipeline job for our hello world app
-
-> Description: Here is our flagship application which needs to be onboarded, https://github.com/DevOpsTestLab/sample-spring-boot. Fork this repository under your own github account so that you can work on it independently. You should see the `Jenkinfile` as part of the repository which our DevOps team created. Its developed in springboot and gradle is used as the build automation tool. Create a multi-branch pipeline project in our Jenkins instance and confirm that the build is successful. Although not a top priority, you can ensure that each build is also running Unit tests and creating coverage report to use in sonarqube.
-
-> **Note**: Feel free to install any plugin in Jenkins to make this work. Set-up GITHUB credentials in Jenkins so that it can checkout and perform the build.
-
-***
-
-### Task 3: Setup sonarqube scan for this project
-
-> Description: We would like to get visibility on our code quality. Please integrate sonarqube in our pipeline. Here are the details below of our sonarqube server, https://sonarcloud.io/. Please integrate your GITHUB account with sonarcloud and create an organization. Update the `Jenkinsfile` to include a new stage called `sonarqube` and add the logic to scan the project. You may have already seen that the devops team has used [docker pipeline](https://www.jenkins.io/doc/book/pipeline/docker/) to use docker containers as our execution environment. Please stick to the same approach if possible.
-
-> **Note**: Please make sure that you dont interfere with the ongoing development on the master branch. Follow branching and merging strategies as much as possible. The multi-branch pipeline will spin up automated jobs for each new branch you create. Feel free to look up in dockerhub for any docker images that you can find to use as the execution environment.
-
-> Here are some useful links, 
-- https://sonarcloud.io/documentation/analysis/analysis-parameters/
-- https://docs.sonarqube.org/latest/analysis/scan/sonarscanner-for-jenkins/
-
-***
-
-### Task 4: Setup docker build and docker push
-
-> Description: Based on the latest update from the DevOps team, one of the engineers was "working" on containerzing the application. You should see a `Dockerfile` in the repo. We were told that the docker build was failing with the `COPY` step, troubleshoot the same and integrate it in the pipeline. Add a new stage for docker build and docker push to the docker hub. You may have already seen that the devops team has used [docker pipeline](https://www.jenkins.io/doc/book/pipeline/docker/) to use docker containers as our execution environment. Please stick to the same approach if possible.
-
-> **Note**: Please make sure to not interfere with the ongoing development on the master branch. Follow branching and merging strategies as much as possible. The multi-branch pipeline will spin up automated jobs for each new branch you create. Feel free to look up in dockerhub for any docker images that you can find to use as the execution environment. You can use your personal credentials to perform the docker push from Jenkins. Make sure to not put your credentials in clear text. Tag the docker images along with the Jenkins build number. Feel free to install any plugins as required.
-
-***
-
-### Task 5: Setup Application deployment onto your EKS cluster
-
-> Description: Based on the latest update from the DevOps team, one of the engineers was "working" on creating the manifest file(`kubernetes.yml`) for our application. You should see a `kubernetes.yml` in the repo. **Review the file carefully**, it should have a deployment and the service definitions. Make any changes to it in-order to support this deployment. Setup a new stage in `Jenkinsfile` for App deployment and implement the deployment to your EKS Cluster.
-
-> **Note**: Please make sure to not interfere with the ongoing development on the master branch. Follow branching and merging strategies as much as possible. The multi-branch pipeline will spin up automated jobs for each new branch you create. Feel free to look up in dockerhub for any docker images that you can find to use as the execution environment. For this you would need an execution environment with kubectl in it. You can use the https://plugins.jenkins.io/kubernetes-cd/ plugin for this, but its really up to you! Innovate and Improvise wherever possible!
+**NOTE: Keep in mind that you may run into issues due to any errors deliberately injected into the terraform templates. Dont expect things to work out of the box. Make the necessary assumptions when you get blocked. Remember that you may be questioned on your troubleshooting/problem solving capabilities as well**
