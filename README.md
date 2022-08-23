@@ -73,4 +73,7 @@ The next step is the sonarqube quality scan step. Its driven by the following [b
 Once the Lambda fuction is deploy. Run a test with some test event. The results should just print "hello world"
 
 
-**NOTE: Keep in mind that you may run into issues due to any errors deliberately injected into the terraform templates. Dont expect things to work out of the box. Make the necessary assumptions when you get blocked. Remember that you may be questioned on your troubleshooting/problem solving capabilities as well**
+**NOTE:**
+1. Keep in mind that you may run into issues due to any errors deliberately injected into the terraform templates/buildspec files. 
+2. Dont expect things to work out of the box. Make the necessary assumptions when you get blocked. 
+3. Remember that you may be questioned on your troubleshooting/problem solving capabilities as well
