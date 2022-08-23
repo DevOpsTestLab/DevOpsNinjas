@@ -64,7 +64,7 @@ Some documentation for your reference - https://docs.sonarcloud.io/advanced-setu
 
 *Update the buildspec file if you need to and re-apply the terraform templates to update your infrastructure*
 
-Task 5: Setup your CI/CD pipeline - Deploy
+### Task 5: Setup your CI/CD pipeline - Deploy
 
 The next step is the sonarqube quality scan step. Its driven by the following [buildspec file](https://github.com/DevOpsTestLab/infra/blob/main/modules/codepipeline/templates/buildspec_deploy.yml)
 
